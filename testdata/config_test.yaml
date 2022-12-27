@@ -1,0 +1,24 @@
+services:
+  task1:
+    command_ex: >-
+      for x in {0..3}; do echo $x; sleep 1; done
+    work_dir: ../
+    log_dir: ./logs
+    ready_condition:
+      stdout_message: "3"
+  task2:
+    command: echo "ls done"
+    depends_on:
+      - task1
+  task3:
+    command: env -conf=${A} -log=${C}
+    environment:
+      - A=B
+      - C=D
+    env_file: ./config_test.env # relative to this config file or the conf dir found in the context
+  task4:
+    # TODO: support env expansion with envs defined here.
+    command: "ls ${HOME}"
+    work_dir: "$HOME"
+    log_dir: "${TMPDIR}"
+

@@ -1,0 +1,16 @@
+services:
+  echo:
+    command: go run . -port 41234
+    work_dir: ./echo
+    log_dir: ./echo
+    ready_condition:
+      after: 2s # we'd better start after a few secs?
+      http:
+        # if there's a running process with 4000 port, the ready check may fail.
+        url: http://localhost:41234/echo
+        expect:
+          status: 200
+  echo_ready:
+    command: echo echo service is ready
+    depends_on:
+      - echo

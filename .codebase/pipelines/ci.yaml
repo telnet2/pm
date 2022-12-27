@@ -1,0 +1,8 @@
+template: go
+go_version: "1.18"
+enable_codecov: true
+enable_mysql: true
+mysql_database: testdb
+mysql_script_path: testdata/mysql/init/init.sql
+# use mongodb://mongo:27017 to connect
+enable_mongo: true

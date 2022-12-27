@@ -1,0 +1,19 @@
+services:
+  mongo:
+    command: >-
+      docker run --rm --name tok_mongodb 
+        -e MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME} 
+        -e MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD} 
+        -p${PORT0}:27017 mongo --auth
+    environment:
+      - PORT0=27017
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    log_dir: ./logs
+    ready_condition:
+      timeout: 10s
+      mongo_db:
+        interval: 3s
+        uri: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:${PORT0}/admin?ssl=false
+        # if username is not set, use this
+        # uri: mongodb://localhost:${PORT0}/admin?ssl=false

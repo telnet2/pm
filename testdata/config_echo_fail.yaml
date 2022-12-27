@@ -1,0 +1,23 @@
+services:
+  echo:
+    command: go run . -port 40000
+    work_dir: ./echo
+    log_dir: ./echo
+    ready_condition:
+      http:
+        url: http://localhost:40000/echo
+        expect:
+          status: 200
+  dead_echo:
+    command: go run . -port 40000
+    work_dir: ./echo
+    log_dir: ./echo
+    depends_on:
+      - echo
+    ready_condition:
+      # this will never succeed
+      timeout: 5s # wait for 5 secs
+      http:
+        url: http://localhost:40001/echo
+        expect:
+          status: 200

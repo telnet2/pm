@@ -1,0 +1,15 @@
+services:
+  mysql:
+    command: >-
+      docker run --rm --name tok_mysql -v=${PWD}/init:/docker-entrypoint-initdb.d:z
+        -p${PORT0}:3306  -e MYSQL_DATABASE_NAME=tok_db -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql:5.7
+    environment:
+      - PORT0=3300
+    log_dir: ./logs
+    ready_condition:
+      mysql:
+        interval: 10s
+        addr: localhost:${PORT0}
+        database: testdb
+        user: root
+        table: hello
